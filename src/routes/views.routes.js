@@ -4,7 +4,7 @@ import {requireAuth, checkExistingUser } from "../middlewares/authMiddleware.js"
 
 const viewsRoutes = Router();
 
-viewsRoutes.get('/welcome', requireAuth, renderIndexPage);
+viewsRoutes.get('/', requireAuth, renderIndexPage);
 viewsRoutes.get('/products', requireAuth, renderProductsPage);
 viewsRoutes.get('/product/:pid', requireAuth, renderProductPage);
 viewsRoutes.get('/cart/:cid', requireAuth, renderCartPage);

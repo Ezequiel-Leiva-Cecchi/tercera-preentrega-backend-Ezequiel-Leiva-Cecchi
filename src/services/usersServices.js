@@ -19,7 +19,7 @@ export const register = async (userData) => {
         const newUser = await usersDAO.createUser(userData);
         return newUser;
     } catch (error) {
-        throw new Error('Failed to register');
+        throw new Error('Failed to register'); 
     }
 };
 
