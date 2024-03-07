@@ -1,13 +1,44 @@
-<h1>Welcome {{user.first_name}} {{user.last_name}}!!!</h1>
-<button id="logoutBtn" type="button">Log out</button>
-<div class="product-cards">
-    {{#each products}}
-    <div class="card">
-        <h2>{{this.title}}</h2>
-        <p>${{this.price}}</p>
-        <p>{{this.description}}</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="css/welcome.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <h1 class="logo">Welcome {{user.first_name}} {{user.last_name}}!!!</h1>
+                <div class="navbar-links">
+                    <div class="dropdown">
+                        <button class="dropbtn">Categories</button>
+                        <div class="dropdown-content">
+                            <a href="#">Samsung</a>
+                            <a href="#">iPhone</a>
+                        </div>
+                    </div>
+                    <button id="cartBtn" type="button" class="cart-btn">Cart (0)</button>
+                    <button id="logoutBtn" type="button" class="logout-btn">Log out</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="product-cards">
+        {{#each products}}
+        <div class="card">
+            <h2>{{this.title}}</h2>
+            <p>Price: ${{this.price}}</p>
+            <p>Description: {{this.description}}</p>
+            <button class="add-to-cart-btn" data-product-id="{{this.id}}">Add to Cart</button>
+        </div>
+        {{/each}}
     </div>
-    {{/each}}
-</div>
-<script src="js/welcome.js"></script>
-<link rel="stylesheet" type="text/css" href="css/welcome.css">
+    <script src="js/welcome.js"></script>
+</body>
+
+</html>

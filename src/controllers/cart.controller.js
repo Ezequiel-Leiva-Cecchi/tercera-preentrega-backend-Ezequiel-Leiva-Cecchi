@@ -13,8 +13,8 @@ export const getCart = async (req, res, next) => {
 // Controlador para obtener los productos de un carrito por su ID
 export const getCartProducts = async (req, res, next) => {
     try {
-        const { cartId } = req.params; // Obtiene el ID del carrito de los parámetros de la solicitud
-        const cart = await cartDAO.getCartById(cartId); // Obtiene el carrito por su ID utilizando el DAO
+        const { cartId } = req.params; 
+        const cart = await cartDAO.getCartById(cartId); 
         if (!cart) {
             throw new Error('CART NOT FOUND'); 
         }

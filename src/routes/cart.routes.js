@@ -3,7 +3,7 @@ import {getCart, getCartProducts, addCart, addProductInCart, deleteProductFromCa
 
 const cartRouter = Router();
 
-cartRouter.get('/', getCart);
+cartRouter.get('/cart', getCart);
 cartRouter.get('/:cid', getCartProducts);
 cartRouter.post('/', addCart);
 cartRouter.post('/:cid/p/:pid', addProductInCart);
