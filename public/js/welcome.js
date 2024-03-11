@@ -8,10 +8,12 @@ function updateCartCount() {
 function addToCart(productId) {
     cartItems.push(productId);
     updateCartCount();
+    
+    // Después de agregar el producto, redirige al usuario al carrito
+    window.location.href = '/cart';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
- 
     const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
     
     addToCartBtns.forEach(btn => {

@@ -38,11 +38,21 @@ export const renderProductPage = async(req, res, next) =>{
         product
     });
 };
-export const renderCartPage = async(req, res, next)=>{
-    const {cartId} = req.params;
-    const cart = await cartDAO.getCartById(cartId);
-    res.render('cart',{title:'Cart',products:cart.product});
+export const renderCartPage = async (req, res, next) => {
+    try {
+        const { cartId } = req.params;
+        const cart = await cartDAO.getCartsById(cartId);
+        // Verifica si el carrito existe antes de intentar acceder a sus productos
+        if (!cart) {
+            throw new Error('Cart not found');
+        }
+        res.render('cart', { title: 'Cart', products: cart.products });
+    } catch (error) {
+        console.error("Error rendering cart page:", error);
+        res.status(500).send("Internal Server Error");
+    }
 };
+
 export const renderLoginPage = async (req, res, next) =>{
     res.render('login',{title:'Login'});
 };
