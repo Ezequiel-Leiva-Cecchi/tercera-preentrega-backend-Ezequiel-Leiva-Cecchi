@@ -1,6 +1,3 @@
-import { CartDTO } from "../../dtos/cart.dto.js";
-
-
 export default class CartRepository {
     constructor(dao) {
         this.dao = dao;
@@ -9,8 +6,7 @@ export default class CartRepository {
     getCart = async () => {
         try {
             const result = await this.dao.get();
-            const cartDTO = CartDTO.fromModel(result);
-            return cartDTO;
+            return result; 
         } catch (error) {
             console.error('Error al obtener el carrito:', error);
             throw error;
@@ -19,10 +15,8 @@ export default class CartRepository {
 
     addCart = async () => {
         try {
-            const newCart = new CartDTO();
-            const result = await this.dao.post(newCart);
-
-            return result;
+            const result = await this.dao.post({}); 
+            return result; 
         } catch (error) {
             console.error('Error al agregar un carrito:', error);
             throw error;
