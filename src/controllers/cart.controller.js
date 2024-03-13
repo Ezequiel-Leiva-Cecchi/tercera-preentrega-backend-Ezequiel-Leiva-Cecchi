@@ -1,81 +1,93 @@
-import { cartDAO } from "../dao/cart/index.js"; 
+import * as cartService from '../services/cartService.js';
 
-// Controlador para obtener todos los carritos
 export const getCart = async (req, res, next) => {
     try {
-        const carts = await cartDAO.getCarts(); // Obtiene todos los carritos utilizando el DAO
-        res.json({ carts }); 
+        const { cartId } = req.params;
+        const cart = await cartService.getCartById(cartId);
+        res.json({ cart });
     } catch (error) {
-        res.json({ error: error.message }); 
+        res.status(500).json({ error: error.message });
     }
 };
 
-// Controlador para obtener los productos de un carrito por su ID
 export const getCartProducts = async (req, res, next) => {
     try {
-        const { cartId } = req.params; 
-        const cart = await cartDAO.getCartById(cartId); 
-        if (!cart) {
-            throw new Error('CART NOT FOUND'); 
-        }
-        res.json({ cartProduct: cart.products }); 
+        const { cartId } = req.params;
+        const cart = await cartService.getCartById(cartId);
+        res.json({ cartProducts: cart.products });
     } catch (error) {
-        res.json({ error: error.message }); 
+        res.status(500).json({ error: error.message });
     }
 };
 
-// Controlador para agregar un nuevo carrito
 export const addCart = async (req, res, next) => {
     try {
-        await cartDAO.addCart(); // Agrega un nuevo carrito utilizando el DAO
-        res.json({ message: 'Successfully add cart' }); 
+        const newCart = await cartService.createCart();
+        res.json({ message: 'Successfully added cart', cartId: newCart._id });
     } catch (error) {
-        res.json({ error: error.message }); 
+        res.status(500).json({ error: error.message });
     }
 };
 
-// Controlador para agregar un producto a un carrito
 export const addProductInCart = async (req, res, next) => {
     try {
-        const { productId, cartId } = req.params; // Obtiene los IDs del producto y del carrito de los parámetros de la solicitud
-        await cartDAO.deleteProductCart({ productId, cartId }); 
-        res.json({ message: 'Successfully add product in cart' }); 
+        const { productId, cartId } = req.params;
+        const cart = await cartService.getCartById(cartId);
+        const existingProductIndex = cart.products.findIndex(product => product.product.toString() === productId);
+
+        if (existingProductIndex !== -1) {
+         
+            cart.products[existingProductIndex].quantity++;
+        } else {
+           
+            cart.products.push({ product: productId, quantity: 1 });
+        }
+    
+        await cartService.updateCart(cartId, { products: cart.products });
+
+        res.json({ message: 'Product added to cart successfully' });
     } catch (error) {
-        res.json({ error: error.message }); 
+        res.status(500).json({ error: error.message });
     }
 };
 
-// Controlador para eliminar un producto de un carrito
+export const deleteCart = async (req, res, next) => {
+    try {
+        const { cartId } = req.params;
+        await cartService.deleteCart(cartId);
+        res.json({ message: 'Successfully deleted cart' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 export const deleteProductFromCart = async (req, res, next) => {
     try {
-        const { productId, cartId } = req.params; // Obtiene los IDs del producto y del carrito de los parámetros de la solicitud
-        await cartDAO.deleteProductFromCart({ productId, cartId }); // Elimina un producto del carrito utilizando el DAO
-        res.json({ message: 'Successfully delete product' }); 
-    } catch (error) {
-        res.json({ error: error.message }); 
-    }
-};
+        const { productId, cartId } = req.params;
+        const cart = await cartService.getCartById(cartId);
+        const productIndex = cart.products.findIndex(product => product.product.toString() === productId);
 
-// Controlador para eliminar un carrito por su ID
-export const deleteCart = async(req, res, next) => {
-    try {
-        const { cartId } = req.params; // Obtiene el ID del carrito de los parámetros de la solicitud
-        const deleteCart = await cartDAO.deleteCart(cartId); // Elimina el carrito por su ID utilizando el DAO
-        if (!deleteCart) {
-            throw new Error('CART NOT FOUND'); 
+        if (productIndex !== -1) {
+            cart.products.splice(productIndex, 1);
+            await cartService.updateCart(cartId, { products: cart.products });
+
+            res.json({ message: 'Product deleted from cart successfully' });
+        } else {
+            res.status(404).json({ error: 'Product not found in cart' });
         }
-        res.json({ message: 'Successfully delete cart' }); // Envía un mensaje de éxito en formato JSON
     } catch (error) {
-        res.json({ error: error.message }); 
+        res.status(500).json({ error: error.message });
     }
 };
 
-// Controlador para actualizar un carrito
+
 export const updateCart = async (req, res, next) => {
     try {
-        const { cartId } = req.params; // Obtiene el ID del carrito de los parámetros de la solicitud
-        await cartDAO.updateCart({ cartId, updateProduct: req.body }); // Actualiza el carrito utilizando el DAO
+        const { cartId } = req.params;
+        const updateData = req.body;
+        const updatedCart = await cartService.updateCart(cartId, updateData);
+        res.json({ message: 'Successfully updated cart', updatedCart });
     } catch (error) {
-        res.json({ error: error.message }); 
+        res.status(500).json({ error: error.message });
     }
 };

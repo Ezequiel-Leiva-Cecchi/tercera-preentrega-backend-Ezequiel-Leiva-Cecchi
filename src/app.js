@@ -56,7 +56,7 @@ app.use('/', viewsRoutes);
 // Rutas de productos
 app.use('/api/products', productRouter);
 // Rutas de carrito
-app.use('/api/carts', cartRouter);
+app.use('/api/cart', cartRouter);
 
 app.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}`);

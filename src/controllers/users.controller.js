@@ -3,8 +3,6 @@ import passport from "passport";
 export const register = async (req, res, next) => {
 
     try {
-        // console.log(‘Datos del usuario recibidos para registro:’, req.user);
-        // const newUser = await usersServices.register(req.user);
         req.session.user = req.user;
         res.redirect('/');
     } catch (error) {

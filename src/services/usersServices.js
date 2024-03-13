@@ -1,4 +1,5 @@
 import { usersDAO } from '../dao/users/index.js';
+import { cartDAO } from '../dao/cart/index.js'
 
 export const register = async (userData) => {
     try {
@@ -17,9 +18,14 @@ export const register = async (userData) => {
             userData.isAdmin = false;
         }
         const newUser = await usersDAO.createUser(userData);
+        // Crear un carrito para el nuevo usuario
+        const newCart = await cartDAO.createCart({ userId: newUser._id });
+        // Asociar el ID del carrito al usuario
+        await usersDAO.updateUserCart(newUser._id, newCart._id);
+
         return newUser;
     } catch (error) {
-        throw new Error('Failed to register'); 
+        throw new Error('Failed to register');
     }
 };
 

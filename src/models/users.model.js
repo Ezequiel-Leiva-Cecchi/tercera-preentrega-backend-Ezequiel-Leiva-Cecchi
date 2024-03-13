@@ -16,8 +16,8 @@ const userSchema = mongoose.Schema({
         unique: true
     },
     cartId:{
-         type: Number,
-         require: true
+         type: mongoose.Schema.Types.ObjectId,  
+         ref: 'cart'  
     },
     password: {
         type: String,
@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.virtual('id').get(function (){
-return this._id.toString();
+    return this._id.toString();
 });
 userSchema.set('toJSON',{virtuals: true});
 userSchema.set('toObject',{virtual:true});
