@@ -1,9 +1,8 @@
-import cartModel from "../models/carts.model.js";
+import { cartDAO } from '../dao/cart/indexCart.js'; 
 
 export const createCart = async () => {
     try {
-        const newCart = await cartModel.create({});
-        return newCart;
+        return await cartDAO.createCart();
     } catch (error) {
         throw new Error('Failed to create cart');
     }
@@ -11,17 +10,23 @@ export const createCart = async () => {
 
 export const getCartById = async (cartId) => {
     try {
-        const cart = await cartModel.findById(cartId).populate('products.product');
-        return cart;
+        return await cartDAO.getCartById(cartId);
     } catch (error) {
         throw new Error('Failed to get cart');
     }
 };
 
+export const addProductToCart = async (cartId, productId) => {
+    try {
+        await cartDAO.addProductToCart(cartId, productId);
+    } catch (error) {
+        throw new Error('Failed to add product to cart');
+    }
+};
+
 export const updateCart = async (cartId, updateData) => {
     try {
-        const updatedCart = await cartModel.findByIdAndUpdate(cartId, updateData, { new: true });
-        return updatedCart;
+        return await cartDAO.updateCart(cartId, updateData);
     } catch (error) {
         throw new Error('Failed to update cart');
     }
@@ -29,7 +34,7 @@ export const updateCart = async (cartId, updateData) => {
 
 export const deleteCart = async (cartId) => {
     try {
-        await cartModel.findByIdAndDelete(cartId);
+        await cartDAO.deleteCart(cartId);
     } catch (error) {
         throw new Error('Failed to delete cart');
     }

@@ -1,4 +1,4 @@
-import { productDAO } from "../dao/product/index.js"; 
+import { productDAO } from "../dao/product/indexProducts.js"; 
 
 export const getProducts = async (query, options) => {
     try {

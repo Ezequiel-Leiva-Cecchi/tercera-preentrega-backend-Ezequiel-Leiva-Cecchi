@@ -1,6 +1,6 @@
 // Importa el modelo de carrito y el DAO de productos
 import cartModel from "../../models/carts.model.js";
-import { productDAO } from "../product/index.js";
+import { productDAO } from "../product/indexProducts.js";
 
 // Clase para el acceso a los carritos mediante Mongoose
 export class cartMongoose {

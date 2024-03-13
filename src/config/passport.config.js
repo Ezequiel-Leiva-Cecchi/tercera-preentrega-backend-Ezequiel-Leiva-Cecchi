@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { usersDAO } from "../dao/users/index.js"; // Importa el DAO de usuarios
+import { usersDAO } from "../dao/users/indexUsers.js"; // Importa el DAO de usuarios
 import { createHash, isValidPassword } from "../utils/bcrypt.js"; // Importa funciones de utilidad para el manejo de contraseñas
 import { Strategy as GithubStrategy } from "passport-github2";
 

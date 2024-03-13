@@ -1,5 +1,5 @@
-import { cartDAO } from "../dao/cart/index.js"; 
-import { productDAO } from "../dao/product/index.js";
+import { cartDAO } from "../dao/cart/indexCart.js"; 
+import { productDAO } from "../dao/product/indexProducts.js";
 
 export const renderIndexPage = async (req, res, next) => {
     try {
