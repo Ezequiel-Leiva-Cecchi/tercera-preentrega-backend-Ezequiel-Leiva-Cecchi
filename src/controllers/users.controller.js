@@ -28,9 +28,14 @@ export const failRegister = async (req, res, next) => {
 
 export const logout = async (req, res, next) => {
     try {
-        req.logout(); // Usando el método de Passport para cerrar la sesión
-        req.session.destroy(); // Destruye la sesión
-        res.redirect('/login');
+        req.logout((err) => {
+            if (err) {
+                return next(err);
+            }
+            req.session.destroy(() => {
+                res.redirect('/login');
+            });
+        });
     } catch (error) {
         console.error(error);
         res.status(400).json({ error: error.message });
