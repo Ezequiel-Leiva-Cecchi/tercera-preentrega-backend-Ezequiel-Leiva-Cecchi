@@ -3,7 +3,7 @@ export class UserDTO {
     this.first_name = first_name;
     this.last_name = last_name;
     this.email = email;
-    this.cartId = cartId;
+    this.cid = cid;
     this.password = password;
   }
 
@@ -12,7 +12,7 @@ export class UserDTO {
       first_name: userModel.first_name,
       last_name: userModel.last_name,
       email: userModel.email,
-      cartId: userModel.cartId,
+      cartId: userModel.cid,
       password: userModel.password
     });
   }

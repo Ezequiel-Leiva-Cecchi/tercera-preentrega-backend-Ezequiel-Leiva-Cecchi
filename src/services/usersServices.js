@@ -1,5 +1,6 @@
+// userService.js
 import { usersDAO } from '../dao/users/index.js';
-import { cartDAO } from '../dao/cart/index.js'
+import { cartService } from '../services/cartService.js'; // Importa el servicio de carrito
 
 export const register = async (userData) => {
     try {
@@ -8,7 +9,7 @@ export const register = async (userData) => {
         if (existingUser) {
             throw new Error('User already exists');
         }
-        // Si el usuario no existe, entonces procede a crear uno nuevo
+       
         if (
             userData.email === 'adminCoder@coder.com' &&
             userData.password === 'adminCod3r123'
@@ -18,16 +19,17 @@ export const register = async (userData) => {
             userData.isAdmin = false;
         }
         const newUser = await usersDAO.createUser(userData);
-        // Crear un carrito para el nuevo usuario
-        const newCart = await cartDAO.createCart({ userId: newUser._id });
-        // Asociar el ID del carrito al usuario
-        await usersDAO.updateUserCart(newUser._id, newCart._id);
+        
+        // Crear un carrito para el nuevo usuario y asociarlo al usuario
+        const newCart = await cartService.createCart(); 
+        await usersDAO.updateUserCart(newUser._id, newCart._id); 
 
         return newUser;
     } catch (error) {
         throw new Error('Failed to register');
     }
 };
+
 
 export const login = async (userData) => {
     try {
